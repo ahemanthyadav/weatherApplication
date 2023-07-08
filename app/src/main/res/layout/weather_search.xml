@@ -31,6 +31,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/Enter_city_here"
         android:textSize="@dimen/text_size_sixteen_sp"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle"

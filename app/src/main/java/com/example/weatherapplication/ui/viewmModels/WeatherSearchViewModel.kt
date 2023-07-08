@@ -16,21 +16,30 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherSearchViewModel @Inject constructor(private val networkRepository: NetworkRepository) : ViewModel() {
 
-    private val _weatherData: MutableLiveData<WeatherNetworkModel> = MutableLiveData()
-    val weatherData: LiveData<WeatherNetworkModel> = _weatherData
+    private val _weatherData: MutableLiveData<WeatherNetworkModel?> = MutableLiveData()
+    val weatherData: LiveData<WeatherNetworkModel?> = _weatherData
 
     fun fetchWeatherFromCity(city: String){
+        // Use viewModelScope to collect weather data from flow
         viewModelScope.launch {
             println("weather viewmodel: $city")
            networkRepository.getWeatherFromCity(city).collect{
                println(it)
                _weatherData.postValue(it)
+               //reset the value in view model to  prevent navigation back to details screen
+               /*
+               it?.let {
+                   //post value if collected weather data is not null
+                   _weatherData.postValue(it)
+               }
+
+                */
            }
         }
-
     }
 
-    fun verifyCity(city: String){
+    fun verifyCity(city: String) = networkRepository.verifyCityName(city)
 
-    }
+
+
 }

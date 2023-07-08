@@ -12,7 +12,7 @@
         tools:layout="@layout/weather_details">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/details_search"
             app:destination="@id/WeatherSearchFragment" />
     </fragment>
     <fragment
@@ -20,9 +20,8 @@
         android:name="com.example.weatherapplication.ui.fragments.WeatherSearchFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/weather_search">
-
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/search_to_details"
             app:destination="@id/WeatherDetailsFragment" />
     </fragment>
 </navigation>
