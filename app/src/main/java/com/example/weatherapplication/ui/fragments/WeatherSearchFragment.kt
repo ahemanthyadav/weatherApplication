@@ -1,4 +1,4 @@
-package com.example.weatherapplication.ui
+package com.example.weatherapplication.ui.fragments
 
 import android.os.Bundle
 import android.text.Editable

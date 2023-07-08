@@ -4,30 +4,30 @@ import com.squareup.moshi.Json
 
 //Data from weather api response
 data class WeatherNetworkModel(
-    @Json(name = "coord")
+    @field:Json(name = "coord")
     val coord: Coordinate,
-    @Json(name = "weather")
+    @field:Json(name = "weather")
     val weather: List<Weather>,
-    @Json(name = "base")
+    @field:Json(name = "base")
     val base: String,
-    @Json(name = "main")
+    @field:Json(name = "main")
     val main: MainModel,
-    @Json(name = "visibility")
+    @field:Json(name = "visibility")
     val visibility: Int,
-    @Json(name = "wind")
+    @field:Json(name = "wind")
     val wind: Wind,
-    @Json(name = "clouds")
+    @field:Json(name = "clouds")
     val clouds: Clouds,
-    @Json(name = "dt")
+    @field:Json(name = "dt")
     val dt: Double,
-    @Json(name = "sys")
+    @field:Json(name = "sys")
     val sys: SYS,
-    @Json(name = "timezone")
+    @field:Json(name = "timezone")
     val timezone: Int,
-    @Json(name = "id")
+    @field:Json(name = "id")
     val id: Int,
-    @Json(name = "name")
+    @field:Json(name = "name")
     val name: String,
-    @Json(name = "cod")
+    @field:Json(name = "cod")
     val cod: Int
 )

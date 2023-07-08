@@ -1,11 +1,13 @@
 package com.example.weatherapplication.data.model
 
+import com.squareup.moshi.Json
+
 //Data class represented in weather api response
 data class MainModel(
-    val temp: Float,
-    val feels_like: Float,
-    val temp_min: Float,
-    val temp_max: Float,
-    val pressure: Int,
-    val humidity: Int
+    @field:Json(name = "temp") val temp: Float,
+    @field:Json(name = "feels_like") val feels_like: Float,
+    @field:Json(name = "temp_min") val temp_min: Float,
+    @field:Json(name = "temp_max") val temp_max: Float,
+    @field:Json(name = "pressure") val pressure: Int,
+    @field:Json(name = "humidity") val humidity: Int
 )

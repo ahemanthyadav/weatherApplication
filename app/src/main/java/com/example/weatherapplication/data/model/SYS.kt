@@ -1,10 +1,12 @@
 package com.example.weatherapplication.data.model
 
+import com.squareup.moshi.Json
+
 //Data class represented in weather api response
 data class SYS(
-    val type: Int,
-    val id: Double,
-    val country: String,
-    val sunrise: Double,
-    val sunset: Double
+    @field:Json(name = "type") val type: Int,
+    @field:Json(name = "id") val id: Double,
+    @field:Json(name = "country") val country: String,
+    @field:Json(name = "sunrise") val sunrise: Double,
+    @field:Json(name = "sunset") val sunset: Double
 )

@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -67,8 +68,11 @@ class NetworkModuleInjector {
         okHttpClient: OkHttpClient
     ): Retrofit{
         return  Retrofit.Builder().apply {
+            //adding baseurl, moshi converter and Okhttp client to retrofit
             baseUrl(baseUrl)
             addConverterFactory(moshiConverterFactory)
+            //addConverterFactory(MoshiConverterFactory.create())
+            //addConverterFactory(GsonConverterFactory.create())
             client(okHttpClient)
         }.build()
     }
