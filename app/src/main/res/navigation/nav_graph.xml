@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/WeatherDetailsFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.weatherapplication.FirstFragment"
+        android:id="@+id/WeatherDetailsFragment"
+        android:name="com.example.weatherapplication.ui.WeatherDetailsFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/weather_details">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/WeatherSearchFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.weatherapplication.SecondFragment"
+        android:id="@+id/WeatherSearchFragment"
+        android:name="com.example.weatherapplication.ui.WeatherSearchFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/weather_search">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/WeatherDetailsFragment" />
     </fragment>
 </navigation>

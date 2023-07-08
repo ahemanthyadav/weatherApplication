@@ -1,4 +1,4 @@
-package com.example.weatherapplication
+package com.example.weatherapplication.ui
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -10,8 +10,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.example.weatherapplication.R
 import com.example.weatherapplication.databinding.ActivityMainBinding
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
