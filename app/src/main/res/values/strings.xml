@@ -5,6 +5,13 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
+    <string name="search">Search</string>
+
+    <string name="Enter_city">Enter City name</string>
+    <string name="Enter_city_here">Enter City name Here</string>
+    <string name="Enter_state">Enter State name</string>
+    <string name="Enter_Country">Enter Country name</string>
+
     <string name="previous">Previous</string>
 
     <string name="lorem_ipsum">
@@ -43,4 +50,5 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

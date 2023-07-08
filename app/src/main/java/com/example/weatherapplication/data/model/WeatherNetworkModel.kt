@@ -1,4 +1,4 @@
-package com.example.weatherapplication.model
+package com.example.weatherapplication.data.model
 
 import com.squareup.moshi.Json
 
@@ -7,7 +7,7 @@ data class WeatherNetworkModel(
     @Json(name = "coord")
     val coord: Coordinate,
     @Json(name = "weather")
-    val weather: Weather,
+    val weather: List<Weather>,
     @Json(name = "base")
     val base: String,
     @Json(name = "main")

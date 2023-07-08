@@ -1,4 +1,4 @@
-package com.example.weatherapplication.repository.api;
+package com.example.weatherapplication.data.repository.api;
 
 import retrofit2.http.POST;
 

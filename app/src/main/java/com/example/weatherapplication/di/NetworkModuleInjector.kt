@@ -1,13 +1,14 @@
 package com.example.weatherapplication.di
 
 import com.example.weatherapplication.Constants
-import com.example.weatherapplication.repository.api.ApiService
+import com.example.weatherapplication.data.repository.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -30,30 +31,24 @@ class NetworkModuleInjector {
     @Singleton
     @Provides
     fun provideMoshiConverterFactory(): Converter.Factory {
+        // used for kotlin serialization and deserialization
         return MoshiConverterFactory.create()
     }
 
     // provides a Singleton Interceptor object through out application
     @Singleton
     @Provides
-    fun provideInterceptor(): Interceptor {
-        return Interceptor {
-            val request = it.request().apply {
-                newBuilder().apply {
-                    //Add any common headers needed as shown below
-                    //addHeader("","")
-
-                }
-            }
-          it.proceed(request)
-        }
+    fun provideHttpInterceptor(): HttpLoggingInterceptor {
+        // adding HttpLoggingInterceptor for monitoring network calls for debugging
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        return interceptor
     }
-
-
     // provides a Singleton OkHttpClient object with Interceptor through out application
     @Singleton
     @Provides
-    fun provideOkHttpClient(interceptor: Interceptor): OkHttpClient {
+    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+        // provides timeout and
         val httpBuilder = OkHttpClient.Builder().apply {
             // adding interceptor to httpBuilder
             addInterceptor(interceptor)
@@ -84,5 +79,6 @@ class NetworkModuleInjector {
     fun provideApiClient(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
+
 
 }
