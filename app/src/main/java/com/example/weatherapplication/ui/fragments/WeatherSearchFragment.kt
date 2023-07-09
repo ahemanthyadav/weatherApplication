@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.weatherapplication.R
 import com.example.weatherapplication.databinding.WeatherSearchBinding
@@ -17,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Duration
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -38,10 +38,8 @@ class WeatherSearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = WeatherSearchBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,6 +51,20 @@ class WeatherSearchFragment : Fragment() {
             }else{
                 // Use Weather Data does exist Inform user
                showToast("Entered city name is not Valid")
+                //if searched city name is not valid at the backend, clear saved city name in datastore
+                weatherSearchViewModel.saveLatestCityName("")
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            weatherSearchViewModel.getLatestCitySearched().collect(){ lastSearchedCityFromDataStore ->
+                //consuming last searched city name from data store
+                lastSearchedCityFromDataStore?.let{
+                    println("lastSearchedCityfromDataStore is :: $lastSearchedCityFromDataStore")
+                    if(lastSearchedCityFromDataStore.isNotBlank()){
+                        //
+                        fetchCityWeather(lastSearchedCityFromDataStore,false)
+                    }
+                }
             }
         }
         binding.city.addTextChangedListener(object: TextWatcher {
@@ -83,11 +95,10 @@ class WeatherSearchFragment : Fragment() {
             val test = weatherSearchViewModel.verifyCity(cityName)
             if(weatherSearchViewModel.verifyCity(cityName)){
                 // if text is valid fetch weather data
-                fetchCityWeather(cityName)
+                fetchCityWeather(cityName, true)
             }else{
                 //If entered text is not valid display a toast
                 showToast("Entered text is not valid. Try entering city name only in letters")
-
             }
             //clear city name after click on search
             binding.city.text.clear()
@@ -108,9 +119,18 @@ class WeatherSearchFragment : Fragment() {
 
     }
 
-    fun fetchCityWeather(city: String){
+    private fun fetchCityWeather(city: String, saveCity: Boolean = false){
+        if(saveCity){
+            //save city Name to dataStore
+            saveCityName(city)
+        }
         //fetch weather data
         weatherSearchViewModel.fetchWeatherFromCity(city)
+    }
+
+    private fun saveCityName(city: String){
+        //save city Name to dataStore
+        weatherSearchViewModel.saveLatestCityName(city)
     }
 
     override fun onDestroyView() {

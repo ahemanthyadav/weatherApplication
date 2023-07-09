@@ -1,10 +1,13 @@
 package com.example.weatherapplication.di
 
+import android.app.Application
+import android.content.Context
 import com.example.weatherapplication.Constants
 import com.example.weatherapplication.data.repository.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -21,7 +24,26 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModuleInjector {
 
+
+    @Provides
+    @Singleton
+    open fun providesContext(context: Application): Context {
+        // provides application context
+        return context
+    }
+/*
+    @Provides
+    @Singleton
+    open fun providesContext( @ApplicationContext context: Context): Context {
+     //another method to provide application context
+        return context
+    }
+
+ */
+
+
     // provides a Singleton Base Url through out application
+
     @Singleton
     @Provides
     fun provideBaseUrl(): String {

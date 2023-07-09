@@ -44,6 +44,10 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.datastore:datastore-core:1.0.0'
+    implementation 'androidx.datastore:datastore-preferences-core:1.0.0'
+    implementation 'androidx.datastore:datastore:1.0.0'
+
 
     //tests
     testImplementation 'junit:junit:4.13.2'
@@ -99,11 +103,14 @@ dependencies {
     //coil library for getting images
     implementation 'io.coil-kt:coil:2.4.0'
 
-    //OkHTTP
     //OKhttp3 - main library plus logging interceptor and mock web server...
     implementation 'com.squareup.okhttp3:okhttp:4.8.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.8.1'
+
+    //DataStore dependency
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
 
 }
 // Allow references to generated code

@@ -3,18 +3,20 @@ package com.example.weatherapplication.ui.viewmModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapplication.data.model.WeatherNetworkModel
+import com.example.weatherapplication.data.repository.DataStoreRepository
 import com.example.weatherapplication.data.repository.NetworkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.logging.Logger
 import javax.inject.Inject
 
 
 @HiltViewModel
-class WeatherSearchViewModel @Inject constructor(private val networkRepository: NetworkRepository) : ViewModel() {
+class WeatherSearchViewModel @Inject constructor(private val networkRepository: NetworkRepository, private val dataStoreRepository: DataStoreRepository) : ViewModel() {
 
     private val _weatherData: MutableLiveData<WeatherNetworkModel?> = MutableLiveData()
     val weatherData: LiveData<WeatherNetworkModel?> = _weatherData
@@ -26,14 +28,6 @@ class WeatherSearchViewModel @Inject constructor(private val networkRepository: 
            networkRepository.getWeatherFromCity(city).collect{
                println(it)
                _weatherData.postValue(it)
-               //reset the value in view model to  prevent navigation back to details screen
-               /*
-               it?.let {
-                   //post value if collected weather data is not null
-                   _weatherData.postValue(it)
-               }
-
-                */
            }
         }
     }
