@@ -104,6 +104,62 @@ class NetworkRepository @Inject constructor(private val apiService: ApiClient, p
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getWeatherFromCityLatLong(lat: String, long: String, apikey: String = Constants.apiValue ): Flow<WeatherNetworkModel?> {
+        // Weather data is sent as flow to viewModel for UI Consumption
+        return flow<WeatherNetworkModel?> {
+            var weatherData: WeatherNetworkModel? = null
+            //println("weather NetworkRepository: $city")
+            val request = apiService.getWeatherFromGeoLocation( lat,long,apikey)
+            val response = request.execute()
+            Log.d(TAG,response.toString())
+            when(response.code()){
+                200 -> {
+                    //Api call is success
+                    //updating weatherModel data with latest network data
+                    weatherData = response.body()
+                    weatherData?.let{
+                        /*save to global variable for Details screen consumption.
+                         latestWeatherData variable is reset after details screen consumed it
+
+                         */
+
+                        latestWeatherData = it
+                        //generating image url
+                        generateImageURL(it)
+                    }
+                }
+
+                401 ->{
+                    //  Unauthorized Error
+                    Log.v(TAG, response.code().toString())
+                    Log.v(TAG,response.message())
+
+                }
+                404 ->{
+                    //  Not Found Error
+                    Log.v(TAG, response.code().toString())
+                    Log.v(TAG,response.message())
+                }
+                429 ->{
+                    // Too Many Requests
+                    Log.v(TAG, response.code().toString())
+                    Log.v(TAG,response.message())
+                }
+                in 500..599 ->{
+                    // Unexpected Error
+                    Log.v(TAG, response.code().toString())
+                    Log.v(TAG,response.message())
+                }
+                else ->{
+                    // Network Error
+                    Log.v(TAG, response.code().toString())
+                    Log.v(TAG,response.message())
+                }
+            }
+            emit(weatherData)
+        }.flowOn(Dispatchers.IO)
+    }
+
 
     fun getStoredWeatherNetworkData(): WeatherNetworkModel?{
         //function to get last searched data in memory

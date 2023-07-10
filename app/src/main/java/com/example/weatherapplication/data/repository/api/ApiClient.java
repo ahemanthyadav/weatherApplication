@@ -15,5 +15,8 @@ public interface ApiClient {
     @GET("/data/2.5/weather")
     Call<WeatherNetworkModel> getWeatherFromCity(@Query("q") String city, @Query(Constants.apiKey) String apiValue);
 
+    // api call to get weather from city gps location
+    @GET("/data/2.5/weather")
+    Call<WeatherNetworkModel> getWeatherFromGeoLocation(@Query("lat") String latitude,@Query("lon") String longitude, @Query(Constants.apiKey) String apiValue);
 
 }

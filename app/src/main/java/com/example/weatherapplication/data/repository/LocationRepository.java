@@ -2,6 +2,7 @@ package com.example.weatherapplication.data.repository;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import android.location.Location;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,9 @@ import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import kotlinx.coroutines.flow.Flow;
 
 public class LocationRepository {
@@ -26,12 +30,14 @@ public class LocationRepository {
     public LocationRepository(FusedLocationProviderClient fusedLocationClient){
         //this.context = context;
         //this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        // dep
+
+        // dependency inject of fusedLocationClient
         this.fusedLocationClient = fusedLocationClient;
     }
 
     @SuppressLint("MissingPermission")
     public void getLastLocation(){
+        //get last known location in callback
         fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -49,6 +55,7 @@ public class LocationRepository {
 
     @SuppressLint("MissingPermission")
     public void getLatestLocation(){
+        //get latest known location in callback
         CurrentLocationRequest currentLocationRequest = new CurrentLocationRequest.Builder()
                 .setDurationMillis(5000)
                 .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
@@ -70,5 +77,36 @@ public class LocationRepository {
         });
     }
 
+
+    @SuppressLint("MissingPermission")
+    public Observable<Location> getLatestLocationObservable(){
+        //CurrentLocationRequest for getCurrentLocation call
+        CurrentLocationRequest currentLocationRequest = new CurrentLocationRequest.Builder()
+                .setDurationMillis(5000)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                .setGranularity(Granularity.GRANULARITY_FINE)
+                .setMaxUpdateAgeMillis(0)
+                .build();
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        return Observable.create(new ObservableOnSubscribe<Location>() {
+        @Override
+        public void subscribe(@io.reactivex.rxjava3.annotations.NonNull ObservableEmitter<Location> emitter) throws Throwable {
+            fusedLocationClient.getCurrentLocation(currentLocationRequest, cancellationTokenSource.getToken()).addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if(task.isSuccessful()){
+                        Location location = task.getResult();
+                        //send latest location to view model using rxjava
+                        emitter.onNext(location);
+                        emitter.onComplete();
+                        System.out.println(location);
+                    }else{
+                        task.getException().printStackTrace();
+                    }
+                }
+            });
+        }
+    });
+    }
 
 }

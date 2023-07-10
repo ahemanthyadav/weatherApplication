@@ -1,8 +1,6 @@
 package com.example.weatherapplication.ui.fragments
 
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,15 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.weatherapplication.R
 import com.example.weatherapplication.databinding.WeatherSearchBinding
+import com.example.weatherapplication.ui.viewmModels.LocationViewModel
 import com.example.weatherapplication.ui.viewmModels.WeatherSearchViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,12 +33,15 @@ class WeatherSearchFragment : Fragment() {
     private var _binding: WeatherSearchBinding? = null
     //get WeatherSearchViewModel instance
     private val weatherSearchViewModel: WeatherSearchViewModel by viewModels()
+    private val locationViewModel: LocationViewModel by activityViewModels()
     lateinit var fusedLocationClient: FusedLocationProviderClient
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +65,13 @@ class WeatherSearchFragment : Fragment() {
                 weatherSearchViewModel.saveLatestCityName("")
             }
         }
+        locationViewModel.locationCalledOnce.observe(viewLifecycleOwner){calledOnce ->
+            if(!calledOnce){
+                //called only once through the application
+                // get weather using location if permission is granted
+                fetchWeatherUsingLocation()
+            }
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             weatherSearchViewModel.getLatestCitySearched().collect(){ lastSearchedCityFromDataStore ->
                 //consuming last searched city name from data store
@@ -76,6 +84,7 @@ class WeatherSearchFragment : Fragment() {
                 }
             }
         }
+
         binding.city.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -113,7 +122,6 @@ class WeatherSearchFragment : Fragment() {
             binding.city.text.clear()
         }
 
-        fetchWeatherUsingLocation()
     }
 
     fun makeSearchButtonClickable(){
@@ -171,6 +179,7 @@ class WeatherSearchFragment : Fragment() {
                 // Location permission granted
                 // ask view model to get locationData
                 weatherSearchViewModel.getCurrentLocation()
+                locationViewModel.madeInitialLocationSearch(true)
 
             }else{
                 // Location permission not granted
