@@ -25,5 +25,5 @@ This application uses Open Weather api to show some of the weather data on the s
 + letters and spaces are allowed in city name
 
 + Search city value in memory will be reset when user click on the search again button or api call says city name is invalid
+<img src="/appimages/app.gif" width="250" height="500"/>
 
-![](/appimages/app.gif)
