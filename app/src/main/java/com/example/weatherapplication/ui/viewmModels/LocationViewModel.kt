@@ -13,6 +13,4 @@ class LocationViewModel: ViewModel() {
         // Save first click through out the application
         _locationCalledOnce.value = locationCalledOnce
     }
-
-
 }
