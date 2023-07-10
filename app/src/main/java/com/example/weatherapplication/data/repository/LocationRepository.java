@@ -92,18 +92,31 @@ public class LocationRepository {
         @Override
         public void subscribe(@io.reactivex.rxjava3.annotations.NonNull ObservableEmitter<Location> emitter) throws Throwable {
             fusedLocationClient.getCurrentLocation(currentLocationRequest, cancellationTokenSource.getToken()).addOnCompleteListener(new OnCompleteListener<Location>() {
+
+
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     if(task.isSuccessful()){
                         Location location = task.getResult();
                         //send latest location to view model using rxjava
-                        emitter.onNext(location);
-                        emitter.onComplete();
+
+                        if(location != null){
+                            emitter.onNext(location);
+                            emitter.onComplete();
+
+                        }else {
+                            // Handle the error case
+                            //emitter.onError(throwable);
+                        }
+
+
                         System.out.println(location);
                     }else{
                         task.getException().printStackTrace();
                     }
                 }
+
+
             });
         }
     });

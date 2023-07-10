@@ -2,6 +2,10 @@ package com.example.weatherapplication
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.launchActivity
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.runner.lifecycle.ActivityLifecycleCallback
@@ -57,10 +61,23 @@ class MainActivityTest {
             .removeLifecycleCallback(activityLifecycleObserver)
         scenario.close()
     }
+
+
     @Test
-    fun StartswithoutCrashing() {
-        // test if activity launches sucessfully
+    fun testActivityDisplayed() {
+        // Given
+        val displayString = "Sample String"
+        // When
         scenario = launchActivity()
+        scenario.onActivity { activity ->
+            // do some stuff with the Activity
+            //activity.setTitle(displayString)
+        }
+        //Thread.sleep(2000)
+        // Then
+        Espresso.onView(withId(R.id.main_activity_layout))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
     }
 
 
