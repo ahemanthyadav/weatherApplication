@@ -1,8 +1,8 @@
 # Weather Application
 
-This application usesOpen Weather api to show some of the weather data on the screen based on  city entered by user. Application adhered to MVVM architecture and Jetpack Components like Flows, LiveData, Navigation, State Flow etc.
+This application uses Open Weather api to show some of the weather data on the screen based on  city entered by user. Application adhered to MVVM architecture and Jetpack Components like Flows, LiveData, Navigation, State Flow etc.
 
-+ Kotlin was mostly used with some files implemented in Java. Java Repository used RxJava for sending data to ViewModels. 
++ Kotlin was mostly used for development with some components implemented in Java. Java Repository used RxJava for sending data to ViewModels. 
 
 + Image caching was done to speed up loading of images using coil library and StateFlow. 
 
@@ -26,5 +26,4 @@ This application usesOpen Weather api to show some of the weather data on the sc
 
 + Search city value in memory will be reset when user click on the search again button or api call says city name is invalid
 
-
-
+![](/appimages/app.gif)
