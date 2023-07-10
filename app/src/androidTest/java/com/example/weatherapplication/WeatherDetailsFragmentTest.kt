@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 @LargeTest
 class WeatherDetailsFragmentTest {
 
-    //manages the components' state
+
 
 
 
