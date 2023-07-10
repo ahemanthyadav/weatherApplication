@@ -66,7 +66,7 @@ class MainActivityTest {
     @Test
     fun testActivityDisplayed() {
         // Given
-        val displayString = "Sample String"
+        //val displayString = "Sample String"
         // When
         scenario = launchActivity()
         scenario.onActivity { activity ->

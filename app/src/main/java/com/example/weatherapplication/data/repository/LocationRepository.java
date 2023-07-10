@@ -92,8 +92,6 @@ public class LocationRepository {
         @Override
         public void subscribe(@io.reactivex.rxjava3.annotations.NonNull ObservableEmitter<Location> emitter) throws Throwable {
             fusedLocationClient.getCurrentLocation(currentLocationRequest, cancellationTokenSource.getToken()).addOnCompleteListener(new OnCompleteListener<Location>() {
-
-
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     if(task.isSuccessful()){
@@ -108,10 +106,9 @@ public class LocationRepository {
                             // Handle the error case
                             //emitter.onError(throwable);
                         }
-
-
-                        System.out.println(location);
+                        //System.out.println(location);
                     }else{
+                        //Exceptions
                         task.getException().printStackTrace();
                     }
                 }

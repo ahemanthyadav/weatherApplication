@@ -37,7 +37,7 @@ class DataStoreRepositoryTest( ) {
 
     @Test
     fun testDatastoreInitialized(){
-        //testing if Data store is properly initialized
+        //testing if Data store is properly initialized by hilt
         Assert.assertNotNull(dataStoreRepository)
     }
 }

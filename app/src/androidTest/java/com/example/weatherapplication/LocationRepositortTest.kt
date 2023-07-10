@@ -36,7 +36,7 @@ class LocationRepositortTest() {
 
     @Test
     fun testDatastoreInitialized(){
-        //testing if d
+        //testing to make sure networkRepository is initialized by hilt
         Assert.assertNotNull(locationRepository)
     }
 }

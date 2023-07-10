@@ -106,7 +106,6 @@ class WeatherSearchFragment : Fragment() {
                     makeSearchButtonNonClickable()
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
             }
 
