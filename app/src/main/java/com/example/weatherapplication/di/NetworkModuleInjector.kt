@@ -3,7 +3,10 @@ package com.example.weatherapplication.di
 import android.app.Application
 import android.content.Context
 import com.example.weatherapplication.Constants
+import com.example.weatherapplication.data.repository.api.ApiClient
 import com.example.weatherapplication.data.repository.api.ApiService
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +33,13 @@ class NetworkModuleInjector {
     open fun providesContext(context: Application): Context {
         // provides application context
         return context
+    }
+
+    @Provides
+    @Singleton
+    open fun providesFusedLocationClient(context: Context): FusedLocationProviderClient {
+        // provides application context
+        return  LocationServices.getFusedLocationProviderClient(context)
     }
 /*
     @Provides
@@ -101,9 +111,16 @@ class NetworkModuleInjector {
 
     @Singleton
     @Provides
-    // provides a Singleton apiClient object through out application
-    fun provideApiClient(retrofit: Retrofit): ApiService {
+    // provides a Singleton ApiService object through out application
+    fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    // provides a Singleton apiClient object through out application
+    fun provideApiClient(retrofit: Retrofit): ApiClient {
+        return retrofit.create(ApiClient::class.java)
     }
 
 

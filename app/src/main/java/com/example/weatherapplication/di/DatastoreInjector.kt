@@ -20,7 +20,8 @@ import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 private const val USER_PREFERENCES = "user_preferences"
-///*
+
+
 @Module
 @InstallIn(SingletonComponent::class)
 class DatastoreInjector {
@@ -38,4 +39,3 @@ class DatastoreInjector {
     }
 }
 
- //*/

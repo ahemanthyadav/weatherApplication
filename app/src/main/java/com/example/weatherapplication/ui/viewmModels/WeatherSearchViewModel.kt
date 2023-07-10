@@ -3,10 +3,10 @@ package com.example.weatherapplication.ui.viewmModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapplication.data.model.WeatherNetworkModel
 import com.example.weatherapplication.data.repository.DataStoreRepository
+import com.example.weatherapplication.data.repository.LocationRepository
 import com.example.weatherapplication.data.repository.NetworkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +16,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class WeatherSearchViewModel @Inject constructor(private val networkRepository: NetworkRepository, private val dataStoreRepository: DataStoreRepository) : ViewModel() {
+class WeatherSearchViewModel @Inject constructor(private val networkRepository: NetworkRepository,
+                                                 private val dataStoreRepository: DataStoreRepository,
+                                                 private val locationRepository: LocationRepository
+) : ViewModel() {
 
     private val _weatherData: MutableLiveData<WeatherNetworkModel?> = MutableLiveData()
     val weatherData: LiveData<WeatherNetworkModel?> = _weatherData
@@ -34,6 +37,26 @@ class WeatherSearchViewModel @Inject constructor(private val networkRepository: 
 
     fun verifyCity(city: String) = networkRepository.verifyCityName(city)
 
+    fun getLatestCitySearched() = dataStoreRepository.getLatestCityNameFlow
+    fun saveLatestCityName(cityName: String) = dataStoreRepository.apply {
+        CoroutineScope(Dispatchers.IO).launch {
+            saveLatestCityName(cityName)
+        }
+    }
+
+    fun getCurrentLocation() {
+        //locationRepository.getLastLocation()
+        locationRepository.getLatestLocation()
+        //locationRepository.getCurrentLocationAsFlow(false)
+        viewModelScope.launch{
+           // locationRepository.getCurrentLocation1()
+        }
+        //locationRepository.getCurrentLocationAsFlow(false)
+    }
+    fun getLastKnownLocation() {
+        //locationRepository.getLastKnowLocationAsFlow(false)
+        //locationRepository.getCurrentLocationAsFlow(false)
+    }
 
 
 }

@@ -1,5 +1,8 @@
 package com.example.weatherapplication.ui.fragments
 
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,12 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.weatherapplication.R
 import com.example.weatherapplication.databinding.WeatherSearchBinding
 import com.example.weatherapplication.ui.viewmModels.WeatherSearchViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +35,7 @@ class WeatherSearchFragment : Fragment() {
     private var _binding: WeatherSearchBinding? = null
     //get WeatherSearchViewModel instance
     private val weatherSearchViewModel: WeatherSearchViewModel by viewModels()
+    lateinit var fusedLocationClient: FusedLocationProviderClient
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -44,6 +52,7 @@ class WeatherSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         weatherSearchViewModel.weatherData.observe(viewLifecycleOwner){
             if(it != null){
                 // Use Weather Data exist navigate to details screen
@@ -103,6 +112,8 @@ class WeatherSearchFragment : Fragment() {
             //clear city name after click on search
             binding.city.text.clear()
         }
+
+        fetchWeatherUsingLocation()
     }
 
     fun makeSearchButtonClickable(){
@@ -145,4 +156,34 @@ class WeatherSearchFragment : Fragment() {
             Toast.makeText(context,text,duration).show()
         }
     }
+
+    private fun checkLocationPermission(): Boolean? = context?.let{context ->
+        (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission
+            (context, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+    }
+
+    fun fetchWeatherUsingLocation(){
+        // request weather information using location
+        val locationPermissionCheck = checkLocationPermission()
+        if(locationPermissionCheck != null){
+            if(locationPermissionCheck){
+                // Location permission granted
+                // ask view model to get locationData
+                weatherSearchViewModel.getCurrentLocation()
+
+            }else{
+                // Location permission not granted
+                //request happens in activity when application starts for the first time
+
+            }
+        }else{
+            //context was null
+
+
+        }
+
+
+    }
+
 }

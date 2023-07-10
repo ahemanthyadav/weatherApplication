@@ -10,7 +10,9 @@ import coil.request.Disposable
 import coil.request.ImageRequest
 import com.example.weatherapplication.Constants
 import com.example.weatherapplication.data.model.WeatherNetworkModel
+import com.example.weatherapplication.data.repository.api.ApiClient
 import com.example.weatherapplication.data.repository.api.ApiService
+import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -25,11 +27,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkRepository @Inject constructor(private val apiService: ApiService, private val context: Context) {
+class NetworkRepository @Inject constructor(private val apiService: ApiClient, private val context: Context) {
 
     //As business logic is small, for simplicity  using Repository as Data Layer as well not
     val TAG = "NetworkRepositoryResponse Log"
     private  var latestWeatherData: WeatherNetworkModel? = null
+    //val fusedLocationClient: FusedLocationProviderClient
+
     //private var imageDrawable: Drawable? = null
 
     lateinit var disposable: Disposable
@@ -49,7 +53,7 @@ class NetworkRepository @Inject constructor(private val apiService: ApiService, 
         return flow<WeatherNetworkModel?> {
             var weatherData: WeatherNetworkModel? = null
             //println("weather NetworkRepository: $city")
-            val request = apiService.getWeatherFromCity(city = city)
+            val request = apiService.getWeatherFromCity( city,Constants.apiValue)
             val response = request.execute()
            Log.d(TAG,response.toString())
                        when(response.code()){

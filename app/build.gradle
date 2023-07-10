@@ -44,9 +44,23 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.datastore:datastore-core:1.0.0'
-    implementation 'androidx.datastore:datastore-preferences-core:1.0.0'
+
+
+    // datastore library
     implementation 'androidx.datastore:datastore:1.0.0'
+    implementation 'androidx.datastore:datastore-core:1.0.0'
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+    // optional - RxJava2 support
+    //implementation("androidx.datastore:datastore-preferences-rxjava2:1.0.0")
+
+    // optional - RxJava3 support
+    //implementation 'androidx.datastore:datastore-preferences-rxjava3:1.0.0'
+
+    //rx java support for java repository
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.2'
+
+    // play library for location
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
 
     //tests
@@ -107,11 +121,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.8.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.8.1'
-
-    //DataStore dependency
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
-
-
 }
 // Allow references to generated code
 kapt {
