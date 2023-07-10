@@ -16,6 +16,7 @@ import com.example.weatherapplication.ui.viewmModels.WeatherDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -48,6 +49,12 @@ class WeatherDetailsFragment : Fragment() {
             binding.cityName.text = it.name
             //setting the text of city using just the first element of weather
             binding.cityWeather.text = it.weather[0].description
+            //K − 273.15) × 9/5 + 32  F
+            val tempF = ((((it.main.temp - 273.15)*9/5)+32)*1000).roundToInt() /1000
+            val tempC = ((it.main.temp - 273.15) * 1000).roundToInt() /1000
+            binding.temperatureF.text = "$tempF F"
+            binding.temperatureC.text = "$tempC C"
+
         }
         //check if weather Data exist in repository using viewModel
         weatherDetailsViewModel.getWeatherDataFromNetworkRepository()

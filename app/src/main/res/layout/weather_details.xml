@@ -67,6 +67,32 @@
         app:layout_constraintBottom_toTopOf="@id/guideline_horizontal2"
         />
 
+    <TextView
+        android:id="@+id/temperature_F"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/margin_ten_dp"
+        android:text="temp"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_eighteen_sp"
+        app:layout_constraintBottom_toTopOf="@id/city_weather"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical1"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal1" />
+    <TextView
+        android:id = "@+id/temperature_C"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="temp"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_eighteen_sp"
+        android:padding="@dimen/margin_ten_dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+        app:layout_constraintTop_toBottomOf="@id/temperature_F"
+        app:layout_constraintBottom_toBottomOf="@id/city_weather"
+        />
+
     <Button
         android:id="@+id/search_again_button"
         android:layout_width="wrap_content"

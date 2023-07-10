@@ -36,6 +36,9 @@ class WeatherSearchFragment : Fragment() {
     private val locationViewModel: LocationViewModel by activityViewModels()
     lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    //check if app is
+    private var  fragmentCalledOnce = false
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -66,6 +69,7 @@ class WeatherSearchFragment : Fragment() {
             }
         }
         locationViewModel.locationCalledOnce.observe(viewLifecycleOwner){calledOnce ->
+            fragmentCalledOnce = calledOnce
             if(!calledOnce){
                 //called only once through the application
                 // get weather using location if permission is granted
@@ -77,8 +81,10 @@ class WeatherSearchFragment : Fragment() {
                 //consuming last searched city name from data store
                 lastSearchedCityFromDataStore?.let{
                     println("lastSearchedCityfromDataStore is :: $lastSearchedCityFromDataStore")
-                    if(lastSearchedCityFromDataStore.isNotBlank()){
-                        //
+                    val locationPermissionNotGranted = !(checkLocationPermission() ?: false)
+                    // If loaction permission is granted and search location is saved give priority to location
+                    if(lastSearchedCityFromDataStore.isNotBlank() and locationPermissionNotGranted ){
+                        //checkLocationPermission
                         fetchCityWeather(lastSearchedCityFromDataStore,false)
                     }
                 }
